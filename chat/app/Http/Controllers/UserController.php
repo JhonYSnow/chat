@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\User;
 
 class UserController extends Controller
 {
@@ -24,8 +25,10 @@ class UserController extends Controller
     }
 
     //get
-    public function show(){
+    public function show($name){
+        $users = User::where('name', '=', $name)->orwhere('id', '=', $name)->get()->toarray();
 
+        return response()->json($users);
     }
 
     //get

@@ -3,14 +3,24 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Friend;
 
 class FriendController extends Controller
 {
     //
     //get
-    public function create()
+    public function create(Request $request)
     {
+        $friend = new Friend;
 
+        $friend->user1 = $request->user1;
+        $friend->user2 = $request->user2;
+
+        if($friend->save()){
+            return response()->json('OK');
+        }else{
+            return response()->json('ERROR');
+        }
     }
 
     //get
