@@ -27,4 +27,16 @@ Route::get('time', function () {
 
 Auth::routes();
 
-Route::get('/', 'HomeController@index');
+Route::group(['middleware' => 'auth'], function() {
+
+    Route::get('/', 'HomeController@index');
+
+    Route::get('/chat', 'HomeController@chat');
+
+    Route::get('/firstPage', 'HomeController@firstPage');
+});
+
+Route::resource('user', 'UserController');
+Route::resource('friend', 'FriendController');
+Route::resource('group', 'GroupController');
+Route::resource('message', 'MessageController');
