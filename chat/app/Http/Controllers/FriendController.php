@@ -50,6 +50,6 @@ class FriendController extends Controller
 
     //delete
     public function destroy(){
-
+        //Friend::where()
     }
 }

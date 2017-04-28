@@ -2,7 +2,19 @@
  * Created by Administrator on 2017/4/24.
  */
 var url = window.location.href;
-var toId = url.split('id=')[1];
+var state = 0;
+var addFriend = 0;
+var str = url.split('00/')[1];
+
+function resetState() {
+    if(str[0] == 'c') {
+        var toId = url.split('id=')[1];
+        state = 1;
+    }else if(str[0] == 'f') {
+        state = 2;
+    }
+}
+resetState();
 //alert(toId);
 
 if ("WebSocket" in window){
@@ -13,24 +25,41 @@ if ("WebSocket" in window){
 
     ws.onopen = function()
     {
-        // Web Socket 已连接上，使用 send() 方法发送数据
-        var name = document.getElementById('username').innerHTML;
-        var mes = document.getElementById('mes').value;
-        var toName = "all";
-        //alert("%" + name + "%" + mes + "%" + toName);
-        if(name != '' && mes != '' && toId != ''){
-            ws.send("%" + name + "%" + mes + "%" + toId);
-            alert(toId);
-        } else{
-            ws.send('conversation start');
+        var user1 = document.getElementById('userid').innerHTML;
+        if(state == 1) {
+            // Web Socket 已连接上，使用 send() 方法发送数据
+
+            var name = document.getElementById('username').innerHTML;
+            var mes = document.getElementById('mes').value;
+            var toName = "all";
+            //alert("%" + name + "%" + mes + "%" + toName);
+            if (name != '' && mes != '' && toId != '') {
+                ws.send("mes%" + name + "%" + mes + "%" + toId);
+            } else {
+                ws.send('conversation start');
+            }
+        }else if(state == 2){
+
+            if(addFriend == 0) {
+                ws.send('connect');
+            }else{
+
+                ws.send("add%" + user1 + "%" + addFriend);
+            }
+        }else if(state == 3){
+
+            ws.send("res%" + user1 + "%" + addFriend);
+
+            resetState();
         }
-        //alert("数据发送中...");
+
     };
 
     ws.onmessage = function (evt) {
         var received_msg = evt.data;
         //alert(received_msg);
-        if(received_msg[0] == '%'){
+        if(received_msg[0] == 'm'){
+
             var mes = received_msg.split('%');
             //alert(mes[0]);
             if(mes[1] == document.getElementById('username').innerHTML){
@@ -45,7 +74,23 @@ if ("WebSocket" in window){
                     + mes[2] + "</p></div>");
             }
             document.getElementById('num').innerHTML = "当前在线人数：" + mes[4];
+        }else if(received_msg[0] == 'a'){
+
+            var mes = received_msg.split('%');
+            //alert(mes[2]);
+            if(mes[2] == document.getElementById('userid').innerHTML){
+                $('#myModal').modal('show');
+                document.getElementById('myModalLabel').innerHTML = mes[1] + "请求添加您为好友";
+            }
+        }else if(received_msg[0] == 'r'){
+
+            var mes = received_msg.split('%');
+            if(mes[2] == document.getElementById('userid').innerHTML){
+                $('#myModal').modal('show');
+                document.getElementById('myModalLabel').innerHTML = mes[1] + "接受了您的好友请求";
+            }
         }else if(received_msg[0] == 'c'){
+
             var mes = received_msg.split('%');
             document.getElementById('num').innerHTML = "当前在线人数：" + mes[1];
         }
@@ -62,6 +107,17 @@ if ("WebSocket" in window){
 }
 
 function WebSocketTest(){
+    ws.onopen();
+}
+
+function webSocketAdd(user2) {
+    addFriend = user2;
+    ws.onopen();
+}
+
+function webSocketAccept(user2) {
+    state = 3;
+    addFriend = user2;
     ws.onopen();
 }
 

@@ -74,6 +74,7 @@
                                 </a>
                                 <p id="username" style="display: none;">{{ Auth::user()->name }}</p>
                                 <p id="userid" style="display: none;">{{ Auth::user()->id }}</p>
+                                <p id="num" style="display: none;"></p>
                             </li>
                             <li>
                                 <a href="{{ route('logout') }}"
