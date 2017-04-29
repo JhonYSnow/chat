@@ -30,7 +30,7 @@
             <div class="col-sm-4 col-xs-4 well" style="padding: 2%;">
 
                 <div class="col-sm-12 col-xs-12" style="margin-top: 20px;">
-                    <span id="num" class="col-sm-12">当前在线人数：</span>
+                    <span id="num1" class="col-sm-12">当前在线人数：</span>
                 </div>
             </div>
         </div>

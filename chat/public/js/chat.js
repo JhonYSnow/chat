@@ -8,7 +8,6 @@ var str = url.split('00/')[1];
 
 function resetState() {
     if(str[0] == 'c') {
-        var toId = url.split('id=')[1];
         state = 1;
     }else if(str[0] == 'f') {
         state = 2;
@@ -31,8 +30,8 @@ if ("WebSocket" in window){
 
             var name = document.getElementById('username').innerHTML;
             var mes = document.getElementById('mes').value;
-            var toName = "all";
-            //alert("%" + name + "%" + mes + "%" + toName);
+            var toId = url.split('id=')[1];
+            //alert("%" + name + "%" + mes + "%" + toId);
             if (name != '' && mes != '' && toId != '') {
                 ws.send("mes%" + name + "%" + mes + "%" + toId);
             } else {
@@ -74,25 +73,28 @@ if ("WebSocket" in window){
                     + mes[2] + "</p></div>");
             }
             document.getElementById('num').innerHTML = "当前在线人数：" + mes[4];
+            document.getElementById('num1').innerHTML = "当前在线人数：" + mes[4];
         }else if(received_msg[0] == 'a'){
 
             var mes = received_msg.split('%');
             //alert(mes[2]);
             if(mes[2] == document.getElementById('userid').innerHTML){
                 $('#myModal').modal('show');
-                document.getElementById('myModalLabel').innerHTML = mes[1] + "请求添加您为好友";
+                document.getElementById('myModalLabel').innerHTML = mes[1] + "@请求添加您为好友";
             }
         }else if(received_msg[0] == 'r'){
 
             var mes = received_msg.split('%');
             if(mes[2] == document.getElementById('userid').innerHTML){
                 $('#myModal').modal('show');
-                document.getElementById('myModalLabel').innerHTML = mes[1] + "接受了您的好友请求";
+                $('#acceptBtn').hide();
+                document.getElementById('myModalLabel').innerHTML = mes[1] + "@接受了您的好友请求";
             }
         }else if(received_msg[0] == 'c'){
 
             var mes = received_msg.split('%');
             document.getElementById('num').innerHTML = "当前在线人数：" + mes[1];
+            document.getElementById('num1').innerHTML = "当前在线人数：" + mes[1];
         }
         //alert("数据已接收...");
     };

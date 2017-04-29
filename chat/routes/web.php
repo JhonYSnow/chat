@@ -40,3 +40,5 @@ Route::resource('user', 'UserController');
 Route::resource('friend', 'FriendController');
 Route::resource('group', 'GroupController');
 Route::resource('message', 'MessageController');
+
+Route::get('/deleteFriend', 'FriendController@delete');
