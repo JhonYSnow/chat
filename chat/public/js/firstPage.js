@@ -2,7 +2,7 @@
 var app = angular.module('myApp', [] ,function($interpolateProvider) {
         $interpolateProvider.startSymbol('<%');
         $interpolateProvider.endSymbol('%>');  }
-    ).constant('API_URL', 'http://localhost:8000');
+    ).constant('API_URL', '');
 
 app.controller('myCtrl', function($scope, $http, API_URL) {
 
@@ -75,6 +75,7 @@ app.controller('myCtrl', function($scope, $http, API_URL) {
 
     $scope.delete = function () {
         var user1 = document.getElementById('userid').innerHTML;
+        alert(document.cookie);
         var user2 = document.cookie.split('delId=')[1].split(';')[0];
         console.log(user1 + "  " + document.cookie.split('delId=')[1].split(';')[0]);
 
@@ -97,7 +98,7 @@ app.controller('myCtrl', function($scope, $http, API_URL) {
     }
 
     $scope.setCookie = function (user2) {
-        document.cookie = '/chat?id='+ user2;
+        document.cookie = '/chat?delId='+ user2 + ';';
     }
 
 });
