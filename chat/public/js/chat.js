@@ -9,7 +9,7 @@ var str = url.split('00/')[1];
 function resetState() {
     if(str[0] == 'c') {
         state = 1;
-    }else if(str[0] == 'f') {
+    }else if(str[0] == 'f' || str[0] == '') {
         state = 2;
     }
 }
@@ -50,6 +50,7 @@ if ("WebSocket" in window){
             ws.send("res%" + user1 + "%" + addFriend);
 
             resetState();
+            //alert(state);
         }
 
     };

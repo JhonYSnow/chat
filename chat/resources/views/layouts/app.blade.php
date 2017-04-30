@@ -16,7 +16,7 @@
 
     <!-- Styles -->
     <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
-    <!--<link href="{{ asset('css/app.css') }}" rel="stylesheet">-->
+    <link href="{{ asset('css/chat.css') }}" rel="stylesheet">
     <style>
         div.well{
             border-width: 3px;
@@ -36,7 +36,7 @@
     </script>
 </head>
 <body>
-    <div id="app">
+    <div id="app" ng-app="myApp" ng-controller="myCtrl" >
         <nav class="navbar navbar-default navbar-static-top">
             <div class="container">
                 <div class="navbar-header">
@@ -50,7 +50,7 @@
                     </button>
 
                     <!-- Branding Image -->
-                    <a class="navbar-brand" href="{{ url('/') }}">
+                    <a class="navbar-brand" href="{{ url('/firstPage') }}">
                         CHAT_WITH_SOCKET
                     </a>
                 </div>
@@ -92,7 +92,33 @@
                 </div>
             </div>
         </nav>
-
+        <div ng-controller="btnCtrl">
+            <div id="mesTable" class="well mesTable">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>消息</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="mesList" ng-repeat="message in messages">
+                        <tr>
+                            <td><p><% message.user1 %>请求添加您为好友</p></td>
+                            <td>
+                                <button class="btn btn-default btn-sm" ng-click="accept(message.user1)">添加</button>
+                                <button class="btn btn-danger btn-sm" ng-click="refuse(message.user1)">拒绝</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <button class="floatBtn btn btn-default" ng-click="floatBtn()">
+                <span class="glyphicon glyphicon-envelope"></span>
+                <div id="mesNum" class="floatMes" ng-model="undone">
+                    <%undone%>
+                </div>
+            </button>
+        <div>
         @yield('content')
     </div>
 

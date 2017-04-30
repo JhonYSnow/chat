@@ -2,11 +2,12 @@
 
 @section('script')
     <script src="{{ asset('js/firstPage.js') }}" ></script>
+    <script src="{{ asset('js/floatBtn.js') }}"></script>
     <script src="{{ asset('js/chat.js') }}" ></script>
 @endsection
 
 @section('content')
-    <div ng-app="myApp" ng-controller="myCtrl" class="row" style="padding-left: 10%; padding-right: 10%; padding-top: 2%;">
+    <div class="row" style="padding-left: 10%; padding-right: 10%; padding-top: 2%;">
 
         <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
             <div class="modal-dialog">
@@ -16,8 +17,8 @@
                         <h4 class="modal-title" id="myModalLabel"></h4>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="refuse()">取消</button>
-                        <button id="acceptBtn" type="button" class="btn btn-primary" data-dismiss="modal" ng-click="accept()">接受</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="refuse(0)">取消</button>
+                        <button id="acceptBtn" type="button" class="btn btn-primary" data-dismiss="modal" ng-click="accept(0)">接受</button>
                     </div>
                 </div>
             </div>
@@ -31,7 +32,7 @@
                         <h4 class="modal-title" id="myModalLabelDel">确认删除？</h4>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="refuse()">取消</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
                         <button id="acceptBtn" type="button" class="btn btn-primary" data-dismiss="modal" ng-click="delete()">确认</button>
                     </div>
                 </div>

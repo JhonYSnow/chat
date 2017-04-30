@@ -5,6 +5,25 @@ var app = angular.module('myApp', [] ,function($interpolateProvider) {
     ).constant('API_URL', '');
 
 app.controller('myCtrl', function($scope, $http, API_URL) {
+    $scope.resetMesTab = function () {
+        var user1 = document.getElementById('userid').innerHTML;
+        $http({
+            method: 'GET',
+            url: API_URL + '/undoneFriend?user1=' + user1
+        }).then(function successCallback(response) {
+            console.log(response);
+
+            $scope.messages = response.data;
+            $scope.undone = response.data.length;
+            if($scope.undone == 0){
+                document.getElementById('mesNum').style.display = 'none';
+            }
+
+        }, function errorCallback(response) {
+            console.log("http error");
+        });
+
+    }
 
     $scope.init = function () {
         var user1 = document.getElementById('userid').innerHTML;
@@ -19,7 +38,8 @@ app.controller('myCtrl', function($scope, $http, API_URL) {
             $scope.usernames = response.data.usernames;
         }, function errorCallback(response) {
             console.log("http error");
-        })
+        });
+        $scope.resetMesTab();
     }
 
     $scope.init();
@@ -42,23 +62,63 @@ app.controller('myCtrl', function($scope, $http, API_URL) {
 
     $scope.add = function (user2) {
 
+        $http({
+            method: 'GET',
+            url: API_URL + '/friend/create?user1=' + document.getElementById('userid').innerHTML +
+            '&user2=' + user2
+        }).then(function successCallback(response) {
+            console.log(response);
+            $scope.init();
+            // document.cookie = "user1=" + document.getElementById('userid').innerHTML;
+            // document.cookie = "user2=" + user2;
+            // alert(document.cookie);
+        }, function errorCallback(response) {
+            console.log("http error");
+        });
+
         webSocketAdd(user2);
-        $scope.init();
     }
 
-    $scope.refuse = function () {
+    $scope.refuse = function (user2) {
+        if(user2 == 0){
+            console.log(API_URL + '/friend/create?user1=' + document.getElementById('userid').innerHTML +
+                '&user2=' + document.getElementById('myModalLabel').innerHTML.split('@')[0]);
+            user2 = document.getElementById('myModalLabel').innerHTML.split('@')[0];
+        }else{
+            console.log(API_URL + '/friend/create?user1=' + document.getElementById('userid').innerHTML +
+                '&user2=' + user2);
+        }
 
+        $http({
+            method: 'GET',
+            url: API_URL + '/deleteFriend?user1=' + user2 +
+                "&user2=" + document.getElementById('userid').innerHTML
+        }).then(function successCallback(response) {
+            console.log(response);
+            $scope.init();
+            // document.cookie = "user1=" + document.getElementById('userid').innerHTML;
+            // document.cookie = "user2=" + user2;
+            // alert(document.cookie);
+        }, function errorCallback(response) {
+            console.log("http error");
+        });
     }
 
-    $scope.accept = function () {
+    $scope.accept = function (user2) {
 
-        console.log(API_URL + '/friend/create?user1=' + document.getElementById('userid').innerHTML +
-            '&user2=' + document.getElementById('myModalLabel').innerHTML.split('@')[0]);
+        if(user2 == 0){
+            console.log(API_URL + '/friend/create?user1=' + document.getElementById('userid').innerHTML +
+                '&user2=' + document.getElementById('myModalLabel').innerHTML.split('@')[0]);
+            user2 = document.getElementById('myModalLabel').innerHTML.split('@')[0];
+        }else{
+            console.log(API_URL + '/friend/create?user1=' + document.getElementById('userid').innerHTML +
+                '&user2=' + user2);
+        }
 
         $http({
             method: 'GET',
             url: API_URL + '/friend/create?user1=' + document.getElementById('userid').innerHTML +
-            '&user2=' + document.getElementById('myModalLabel').innerHTML.split('@')[0]
+            '&user2=' + user2
         }).then(function successCallback(response) {
             console.log(response);
             $scope.init();
@@ -75,7 +135,7 @@ app.controller('myCtrl', function($scope, $http, API_URL) {
 
     $scope.delete = function () {
         var user1 = document.getElementById('userid').innerHTML;
-        alert(document.cookie);
+        //alert(document.cookie);
         var user2 = document.cookie.split('delId=')[1].split(';')[0];
         console.log(user1 + "  " + document.cookie.split('delId=')[1].split(';')[0]);
 

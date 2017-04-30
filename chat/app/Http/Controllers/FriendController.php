@@ -13,17 +13,13 @@ class FriendController extends Controller
     public function create(Request $request)
     {
         $friend = new Friend;
-        $friend1 = new Friend;
         $friend2 = Friend::where(['user1' => $request->user1, 'user2' => $request->user2])->get()->toarray();
 
         if(count($friend2) == 0){
             $friend->user1 = $request->user1;
             $friend->user2 = $request->user2;
 
-            $friend1->user1 = $request->user2;
-            $friend1->user2 = $request->user1;
-
-            if($friend->save() && $friend1->save()){
+            if($friend->save()){
                 return response()->json('OK');
             }else{
                 return response()->json('ERROR');
@@ -77,5 +73,26 @@ class FriendController extends Controller
         Friend::where(['user2' => $user1, 'user1' => $user2])->delete();
 
         return "删除成功";
+    }
+
+    //找到未处理的请求
+    public function undone(Request $request){
+        $friends1 = Friend::where(['user2' => $request->user1])->get()->toarray();
+        $friends2 = Friend::where(['user1' => $request->user1])->get()->toarray();
+
+        $friends = array();
+        $num = 0;
+        for($i = 0; $i<count($friends1); $i++){
+            $flag = 0;
+            for($j = 0; $j<count($friends2); $j++){
+                if($friends1[$i]['user1'] == $friends2[$j]['user2']){
+                    $flag = 1;
+                }
+            }
+            if($flag == 0)
+                $friends[$num] = $friends1[$i];
+        }
+
+        return $friends;
     }
 }
