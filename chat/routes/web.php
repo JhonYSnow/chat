@@ -29,11 +29,15 @@ Auth::routes();
 
 Route::group(['middleware' => 'auth'], function() {
 
-    Route::get('/', 'HomeController@index');
+    Route::get('', 'HomeController@index');
 
     Route::get('/chat', 'HomeController@chat');
 
     Route::get('/firstPage', 'HomeController@firstPage');
+
+    Route::get('/allChat', 'HomeController@allChat');
+
+    Route::get('/test', 'HomeController@test');
 });
 
 Route::resource('user', 'UserController');

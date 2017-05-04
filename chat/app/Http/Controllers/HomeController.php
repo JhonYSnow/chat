@@ -26,7 +26,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        return view('firstPage');
     }
 
     public function chat(){
@@ -44,5 +44,13 @@ class HomeController extends Controller
         }
 
         return view('firstPage', compact('friends', 'usernames'));
+    }
+
+    public function allChat(){
+        return view('allChat');
+    }
+
+    public function test(){
+        return view('test');
     }
 }

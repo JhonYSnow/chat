@@ -2,6 +2,8 @@
 
 @section('script')
     <script src="{{ asset('js/chat.js') }}" ></script>
+    <script src="{{ asset('js/chatAg.js') }}" ></script>
+    <script src="{{ asset('js/floatBtn.js') }}" ></script>
 @endsection
 
 
@@ -14,6 +16,12 @@
                     </div>
                 </div>
                 <div class="col-sm-12 well">
+                        <div class="col-sm-12 col-xs-12" style="margin-top: 15px;">
+                            <button  style="position: absolute;">
+                                <span class="glyphicon glyphicon-picture"></span>
+                            </button>
+                            <input class="btn btn-default" id="mesPic" name="mesPic" type="file" style="width: 20px;height:20px;opacity: 0; z-index: 3;">
+                        </div>
 
                         <div class="col-sm-12 col-xs-12" style="margin-top: 15px;">
                             <input id="mes" name="mes" class="col-sm-12 col-xs-12" type="textarea" style="height: 100px;">

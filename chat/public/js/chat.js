@@ -11,6 +11,10 @@ function resetState() {
         state = 1;
     }else if(str[0] == 'f' || str[0] == '') {
         state = 2;
+    }else if(str[0] == 'a'){
+        state = 4;
+    }else if(str[0] == 't'){
+        state = 5;
     }
 }
 resetState();
@@ -51,17 +55,40 @@ if ("WebSocket" in window){
 
             resetState();
             //alert(state);
+        }else if(state == 4){
+            var name = document.getElementById('username').innerHTML;
+            var mes = document.getElementById('mes').value;
+
+            if(document.getElementById('mes').value == ''){
+                ws.send("conversation start");
+            }else{
+                ws.send("toAll%" + name + "%" + mes);
+            }
+        }else if(state == 5){
+            var name = document.getElementById('username').innerHTML;
+            var mes = document.getElementById('mesPic').files[0];
+            var toId = url.split('id=')[1];
+
+            if(!(document.getElementById('mesPic').files)){
+                ws.send("conversation start");
+            }else{
+                ws.send("picTo%" + name + "%" + toId);
+                ws.send(mes);
+                document.getElementById('mesPic').value = '';
+            }
+
+            resetState();
         }
 
     };
 
     ws.onmessage = function (evt) {
         var received_msg = evt.data;
-        //alert(received_msg);
+        console.log(evt);
         if(received_msg[0] == 'm'){
 
             var mes = received_msg.split('%');
-            //alert(mes[0]);
+
             if(mes[1] == document.getElementById('username').innerHTML){
                 //me to others
                 $('#list').append("<div style='text-align: right; margin: 10px;'><p>"
@@ -96,6 +123,50 @@ if ("WebSocket" in window){
             var mes = received_msg.split('%');
             document.getElementById('num').innerHTML = "当前在线人数：" + mes[1];
             document.getElementById('num1').innerHTML = "当前在线人数：" + mes[1];
+        }else if(received_msg[0] == 't'){
+            var mes = received_msg.split('%');
+            //alert(mes[0]);
+            if(mes[1] == document.getElementById('username').innerHTML){
+                //me to others
+                $('#list').append("<div style='text-align: right; margin: 10px;'><p>"
+                    + mes[2] + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
+                    + mes[1] + "&nbsp;&nbsp;&nbsp;<span class='glyphicon glyphicon-user'></span></p></div>");
+            }else{
+                //others to me
+                $('#list').append("<div style='margin: 10px;'><p><span class='glyphicon glyphicon-user'>&nbsp;</span>"
+                    + mes[1] + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
+                    + mes[2] + "</p></div>");
+            }
+            document.getElementById('num').innerHTML = "当前在线人数：" + mes[3];
+            document.getElementById('num1').innerHTML = "当前在线人数：" + mes[3];
+        }else if(typeof(received_msg) != "string"){
+            console.log('pic');
+            var reader = new FileReader();
+            reader.onload = function(evt){
+                if(evt.target.readyState == FileReader.DONE){
+                    var blob = evt.data;
+                    var url = evt.target.result;
+                    var picName = document.cookie.split('picName=')[1].split(';')[0];
+                    var picToId = document.cookie.split('picToId=')[1].split(';')[0];
+                    if(picName == document.getElementById('username').innerHTML) {
+                        $('#list').append("<div style='text-align: right; margin: 10px;'><img style='height: 150px;' src='" + url + "'>&nbsp;&nbsp;&nbsp;"
+                            + picName + "&nbsp;&nbsp;&nbsp;<span class='glyphicon glyphicon-user'></span></div>");
+                    }else{
+                        $('#list').append("<div style='margin: 10px;'><span class='glyphicon glyphicon-user'></span>"
+                            + picName + "&nbsp;&nbsp;&nbsp;"
+                            + "<img style='height: 150px;' src='" + url + "'>"
+                            +"</div>");
+                    }
+                }
+            }
+            reader.readAsDataURL(received_msg);
+        }else if(received_msg[0] == 'p'){
+            var mes = received_msg.split('%');
+
+            document.cookie = "picName=" + mes[1] + ";" ;
+            document.cookie = "picToId=" + mes[2] + ";" ;
+            document.getElementById('num').innerHTML = "当前在线人数：" + mes[3];
+            document.getElementById('num1').innerHTML = "当前在线人数：" + mes[3];
         }
         //alert("数据已接收...");
     };
@@ -110,7 +181,12 @@ if ("WebSocket" in window){
 }
 
 function WebSocketTest(){
+    console.log(document.getElementById('mesPic').files);
+    if(document.getElementById('mesPic').files.length != 0){
+        state = 5;
+    }
     ws.onopen();
+    document.getElementById('mes').value = '';
 }
 
 function webSocketAdd(user2) {
