@@ -162,10 +162,29 @@ if ("WebSocket" in window){
                                 + picName + "&nbsp;&nbsp;&nbsp;<span class='glyphicon glyphicon-user'></span></div>");
                         }
                     }else if(picToId == document.getElementById('userid').innerHTML){
-                        $('#list').append("<div style='margin: 10px;'><span class='glyphicon glyphicon-user'></span>"
-                            + picName + "&nbsp;&nbsp;&nbsp;"
-                            + "<img style='height: 150px;' src='" + url + "'>"
-                            +"</div>");
+                        if(type == 'jpg' || type == 'JPG' || type == 'BMP' || type == 'bmp' || type == 'png' || type == 'PNG') {
+                            $('#list').append("<div style='margin: 10px;'><span class='glyphicon glyphicon-user'></span>"
+                                + picName + "&nbsp;&nbsp;&nbsp;"
+                                + "<img style='height: 150px;' src='" + url + "'>"
+                                + "</div>");
+                        }else {
+                            $('#list').append("<div style='margin: 10px;'><span class='glyphicon glyphicon-user'></span>"
+                                + picName + "&nbsp;&nbsp;&nbsp;"
+                                + "<a style='height: 150px;' href='"+ url + "' download='down." + type + "'>文件链接</a>"
+                                + "</div>");
+                        }
+                    }else if(state == 4){
+                        if(type == 'jpg' || type == 'JPG' || type == 'BMP' || type == 'bmp' || type == 'png' || type == 'PNG') {
+                            $('#list').append("<div style='margin: 10px;'><span class='glyphicon glyphicon-user'></span>"
+                                + picName + "&nbsp;&nbsp;&nbsp;"
+                                + "<img style='height: 150px;' src='" + url + "'>"
+                                + "</div>");
+                        }else {
+                            $('#list').append("<div style='margin: 10px;'><span class='glyphicon glyphicon-user'></span>"
+                                + picName + "&nbsp;&nbsp;&nbsp;"
+                                + "<a style='height: 150px;' href='"+ url + "' download='down." + type + "'>文件链接</a>"
+                                + "</div>");
+                        }
                     }
                 }
             }
