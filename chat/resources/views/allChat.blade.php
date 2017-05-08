@@ -16,8 +16,21 @@
                 </div>
             </div>
             <div class="col-sm-12 well">
+                <div class="col-sm-12 col-xs-12" style="margin-top: 15px;">
+                    <button class="btn btn-default" style="position: absolute;" data-toggle="tooltip"
+                            data-placement="right">
+                        <span class="glyphicon glyphicon-picture"></span>
+                    </button>
+                    <input class="btn btn-default" id="mesPic" name="mesPic" type="file"
+                           onclick="document.getElementById('imgShow').disabled = false;"
+                           style="width: 20px;height:20px;opacity: 0;">
+                    <button id="imgShow" type="button" class="btn btn-default" style="float: right;" ng-click="showPic()" disabled="true">
+                        预览图片
+                    </button>
+                </div>
 
                 <div class="col-sm-12 col-xs-12" style="margin-top: 15px;">
+                    <div id="imgReview"></div>
                     <input id="mes" name="mes" class="col-sm-12 col-xs-12" type="textarea" style="height: 100px;">
                 </div>
 

@@ -5,6 +5,7 @@ var url = window.location.href;
 var state = 0;
 var addFriend = 0;
 var str = url.split('00/')[1];
+var type = '';
 
 function resetState() {
     if(str[0] == 'c') {
@@ -72,8 +73,11 @@ if ("WebSocket" in window){
             if(!(document.getElementById('mesPic').files)){
                 ws.send("conversation start");
             }else{
-                ws.send("picTo%" + name + "%" + toId);
+                type = document.getElementById('mesPic').value.split('.')[1];
+                console.log(type + "-------------");
+                ws.send("picTo%" + name + "%" + toId + "%" + type);
                 ws.send(mes);
+                console.log(mes);
                 document.getElementById('mesPic').value = '';
             }
 
@@ -84,7 +88,6 @@ if ("WebSocket" in window){
 
     ws.onmessage = function (evt) {
         var received_msg = evt.data;
-        console.log(evt);
         if(received_msg[0] == 'm'){
 
             var mes = received_msg.split('%');
@@ -140,18 +143,25 @@ if ("WebSocket" in window){
             document.getElementById('num').innerHTML = "当前在线人数：" + mes[3];
             document.getElementById('num1').innerHTML = "当前在线人数：" + mes[3];
         }else if(typeof(received_msg) != "string"){
-            console.log('pic');
+            console.log('file');
             var reader = new FileReader();
             reader.onload = function(evt){
                 if(evt.target.readyState == FileReader.DONE){
-                    var blob = evt.data;
+                    console.log(evt);
                     var url = evt.target.result;
                     var picName = document.cookie.split('picName=')[1].split(';')[0];
                     var picToId = document.cookie.split('picToId=')[1].split(';')[0];
+
                     if(picName == document.getElementById('username').innerHTML) {
-                        $('#list').append("<div style='text-align: right; margin: 10px;'><img style='height: 150px;' src='" + url + "'>&nbsp;&nbsp;&nbsp;"
-                            + picName + "&nbsp;&nbsp;&nbsp;<span class='glyphicon glyphicon-user'></span></div>");
-                    }else{
+                        if(type == 'jpg' || type == 'JPG' || type == 'BMP' || type == 'bmp' || type == 'png' || type == 'PNG') {
+                            $('#list').append("<div style='text-align: right; margin: 10px;'><img style='height: 150px;' src='" + url + "'>&nbsp;&nbsp;&nbsp;"
+                                + picName + "&nbsp;&nbsp;&nbsp;<span class='glyphicon glyphicon-user'></span></div>");
+                        }else {
+                            $('#list').append("<div style='text-align: right; margin: 10px;'>"
+                                + "<a style='height: 150px;' href='"+ url + "' download='down." + type + "'>文件链接</a>&nbsp;&nbsp;&nbsp;"
+                                + picName + "&nbsp;&nbsp;&nbsp;<span class='glyphicon glyphicon-user'></span></div>");
+                        }
+                    }else if(picToId == document.getElementById('userid').innerHTML){
                         $('#list').append("<div style='margin: 10px;'><span class='glyphicon glyphicon-user'></span>"
                             + picName + "&nbsp;&nbsp;&nbsp;"
                             + "<img style='height: 150px;' src='" + url + "'>"
@@ -165,8 +175,9 @@ if ("WebSocket" in window){
 
             document.cookie = "picName=" + mes[1] + ";" ;
             document.cookie = "picToId=" + mes[2] + ";" ;
-            document.getElementById('num').innerHTML = "当前在线人数：" + mes[3];
-            document.getElementById('num1').innerHTML = "当前在线人数：" + mes[3];
+            type = mes[3];
+            document.getElementById('num').innerHTML = "当前在线人数：" + mes[4];
+            document.getElementById('num1').innerHTML = "当前在线人数：" + mes[4];
         }
         //alert("数据已接收...");
     };
@@ -181,12 +192,13 @@ if ("WebSocket" in window){
 }
 
 function WebSocketTest(){
-    console.log(document.getElementById('mesPic').files);
     if(document.getElementById('mesPic').files.length != 0){
         state = 5;
     }
     ws.onopen();
     document.getElementById('mes').value = '';
+    document.getElementById('imgShow').disabled = true;
+    document.getElementById('imgReview').innerHTML = '';
 }
 
 function webSocketAdd(user2) {
