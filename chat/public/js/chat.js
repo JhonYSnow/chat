@@ -25,7 +25,7 @@ if ("WebSocket" in window){
     //alert("您的浏览器支持 WebSocket!");
 
     // 打开一个 web socket
-    var ws = new WebSocket("ws:www.yuanpengyi.cn:8020");
+    var ws = new WebSocket("ws:123.207.165.48:8020");
 
     ws.onopen = function()
     {
