@@ -24,6 +24,20 @@
             </div>
         </div>
 
+        <div class="modal fade" id="myModalOk" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4 class="modal-title" id="myModalLabel"></h4>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="">好的</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="modal fade" id="myModalDel" tabindex="-1" role="dialog" aria-labelledby="myModalLabelDel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -61,7 +75,7 @@
                             <td><% user.id %></td>
                             <td>asd</td>
                             <td><a><% user.name %></a></td>
-                            <td><button ng-click="add(user.id)">添加</button></td>
+                            <td  style="padding: 0px;"><button class="btn btn-default btn-sm" ng-click="add(user.id)">添加</button></td>
                         </tr>
                     </tbody>
                 </table>
@@ -69,7 +83,7 @@
         </div>
 
         <div class="well col-sm-5">
-            <h2>好友列表</h2>
+            <h2>好友列表<button class="btn btn-default" style="float:right;" onclick="window.location.href = '/allChat?id=' + document.getElementById('userid').innerHTML">群聊</button></h2>
             <table class="table">
                 <thead>
                     <tr>
@@ -88,7 +102,7 @@
                                 <% usernames[$index] %>
                             </a>
                         </td>
-                        <td><button ng-click="setCookie(friend.user2)" data-toggle="modal" data-target="#myModalDel">删除</button></td>
+                        <td  style="padding: 0px;"><button class="btn btn-danger btn-sm" ng-click="setCookie(friend.user2)" data-toggle="modal" data-target="#myModalDel">删除</button></td>
                     </tr>
                 </tbody>
             </table>

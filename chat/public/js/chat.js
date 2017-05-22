@@ -117,8 +117,7 @@ if ("WebSocket" in window){
 
             var mes = received_msg.split('%');
             if(mes[2] == document.getElementById('userid').innerHTML){
-                $('#myModal').modal('show');
-                $('#acceptBtn').hide();
+                $('#myModalOk').modal('show');
                 document.getElementById('myModalLabel').innerHTML = mes[1] + "@接受了您的好友请求";
             }
         }else if(received_msg[0] == 'c'){
