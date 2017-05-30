@@ -65,7 +65,6 @@
                     <thead>
                     <tr>
                         <th>id</th>
-                        <th>头像</th>
                         <th>昵称</th>
                         <th>添加</th>
                     </tr>
@@ -73,7 +72,6 @@
                     <tbody id="searchList" ng-repeat="user in users">
                         <tr>
                             <td><% user.id %></td>
-                            <td>asd</td>
                             <td><a><% user.name %></a></td>
                             <td  style="padding: 0px;"><button class="btn btn-default btn-sm" ng-click="add(user.id)">添加</button></td>
                         </tr>
@@ -88,7 +86,6 @@
                 <thead>
                     <tr>
                         <th>id</th>
-                        <th>头像</th>
                         <th>昵称</th>
                         <th>操作</th>
                     </tr>
@@ -96,7 +93,6 @@
                 <tbody ng-model="friends" ng-repeat="friend in friends track by $index">
                     <tr>
                         <td id="id"><% friend.id %></td>
-                        <td>asd</td>
                         <td>
                             <a id="name" ng-model="usernames" ng-click="location(friend.user2)">
                                 <% usernames[$index] %>
